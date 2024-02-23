@@ -1,16 +1,19 @@
-# This is a sample Python script.
+import pandas as pd
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from sklearn.datasets import load_iris
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from classifier import Classifier
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    iris_data = load_iris()
+    data = pd.DataFrame(iris_data.data, columns=iris_data.feature_names)
+    data["species"] = [iris_data.target_names[x]for x in iris_data.target]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    X = data.drop("species", axis=1)
+    y = data["species"]
+
+    model = Classifier(max_samples=50)
+    model.train(X, y)
+    pred = model.predict(X)
+    print(pred)
